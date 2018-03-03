@@ -1,0 +1,19 @@
+function process {
+        SERVICENAME="rpi_omx_loop"
+        echo "enabling $SERVICENAME"
+        sudo systemctl daemon-reload
+        sudo systemctl enable $SERVICENAME.service
+        sudo systemctl restart $SERVICENAME.service
+
+}
+
+
+post_install() {
+        process
+}
+
+post_upgrade() {
+        process
+}
+
+
