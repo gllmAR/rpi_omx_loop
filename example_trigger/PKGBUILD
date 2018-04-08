@@ -1,27 +1,28 @@
-pkgname=rpi_omx_loop
+pkgname=rpi_omx_trigger
 pkgver=0
 pkgrel=1
-pkgdesc="rpi_omx_player"
+pkgdesc="rpi_omx_osc_trigger"
 arch=('any')
-depends=('omxplayer')
-source=("$pkgname.service" "$pkgname.sh" "omx_dbus_ctl.sh")
+depends=('omxplayer' 'python-systemd')
+source=("$pkgname.service")
 install=$pkgname.install
-md5sums=('SKIP' 'SKIP' 'SKIP')
+md5sums=('SKIP')
 
 package() 
 {
 msg "this is my directory `pwd`"
+SCRIPTPATH="$(dirname `pwd`)"
+msg "this is my scriptpath $SCRIPTPATH"
 INSTALLPATH=/etc/systemd/system
 SERVICEPATH=$srcdir/$pkgname.service
-EXECPATH="$srcdir/$pkgname.sh"
+EXECPATH="/usr/bin/python $SCRIPTPATH/osc_trigger.py"
 
 touch $SERVICEPATH
 echo [Unit] > $SERVICEPATH
-echo Description=$APPNAME >> $SERVICEPATH
+echo Description=$pkgdesc >> $SERVICEPATH
 echo After=syslog.target network.target >> $SERVICEPATH
 echo [Service] >> $SERVICEPATH
 echo User=$LOGNAME >> $SERVICEPATH
-echo Environment=DISPLAY=:0 >> $SERVICEPATH
 echo ExecStart=$EXECPATH >> $SERVICEPATH
 echo Restart=on-failure >>$SERVICEPATH
 echo [Install] >>$SERVICEPATH
@@ -32,6 +33,5 @@ msg "packaging service"
     install -D -m 644 "$f" "$pkgdir/etc/systemd/system/$f"
   done
 
-install -D -m 755 "omx_dbus_ctl.sh" "$pkgdir/usr/local/bin/omx_dbus_ctl"
 
 }

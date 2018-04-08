@@ -1,0 +1,9 @@
+[Unit]
+Description=rpi_omx_osc_trigger
+After=syslog.target network.target
+[Service]
+User=artificiel
+ExecStart=/usr/bin/python /home/artificiel/src/rpi_omx_loop/example_trigger/osc_trigger.py
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
