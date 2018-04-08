@@ -11,9 +11,10 @@ md5sums=('SKIP' 'SKIP' 'SKIP')
 package() 
 {
 msg "this is my directory `pwd`"
+SCRIPTPATH="$(dirname `pwd`)"
 INSTALLPATH=/etc/systemd/system
 SERVICEPATH=$srcdir/$pkgname.service
-EXECPATH="$srcdir/$pkgname.sh"
+EXECPATH="$SCRIPTPATH/$pkgname.sh"
 
 touch $SERVICEPATH
 echo [Unit] > $SERVICEPATH

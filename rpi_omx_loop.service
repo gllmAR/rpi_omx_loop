@@ -4,7 +4,7 @@ After=syslog.target network.target
 [Service]
 User=artificiel
 Environment=DISPLAY=:0
-ExecStart=/home/artificiel/src/rpi_omx_loop/src/rpi_omx_loop.sh
+ExecStart=/home/artificiel/src/rpi_omx_loop/rpi_omx_loop.sh
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
