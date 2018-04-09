@@ -1,0 +1,36 @@
+pkgname=http_remote
+pkgver=0
+pkgrel=1
+pkgdesc="http_remote"
+arch=('any')
+depends=('python-systemd')
+source=("$pkgname.service")
+install=$pkgname.install
+md5sums=('SKIP')
+
+package() 
+{
+msg "this is my directory `pwd`"
+SCRIPTPATH="$(dirname `pwd`)"
+msg "this is my scriptpath $SCRIPTPATH"
+INSTALLPATH=/etc/systemd/system
+SERVICEPATH=$srcdir/$pkgname.service
+EXECPATH="/usr/bin/python $SCRIPTPATH/$pkgname.py"
+
+touch $SERVICEPATH
+echo [Unit] > $SERVICEPATH
+echo Description=$pkgdesc >> $SERVICEPATH
+echo After=syslog.target network.target >> $SERVICEPATH
+echo [Service] >> $SERVICEPATH
+echo ExecStart=$EXECPATH >> $SERVICEPATH
+echo Restart=on-failure >>$SERVICEPATH
+echo [Install] >>$SERVICEPATH
+echo WantedBy=multi-user.target >>$SERVICEPATH
+
+msg "packaging service"
+  for f in *.service; do
+    install -D -m 644 "$f" "$pkgdir/etc/systemd/system/$f"
+  done
+
+
+}

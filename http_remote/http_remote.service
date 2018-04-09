@@ -1,0 +1,8 @@
+[Unit]
+Description=http_remote
+After=syslog.target network.target
+[Service]
+ExecStart=/usr/bin/python /home/artificiel/src/rpi_omx_loop/http_remote/http_remote.py
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
