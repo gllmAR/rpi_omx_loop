@@ -9,9 +9,13 @@ class Http_Remote_Server(BaseHTTPRequestHandler):
 
 
 	def do_GET(self):
-		# description,url,command 
+		# description,url,command
 		DATA = [
-			["reload looper", "/reload", "sudo systemctl restart rpi_omx_loop"],
+			["home", "/", "echo $HOSTNAME"],
+			["simulate sensor 0", "/sensor_0", "sendosc 127.0.1 5005 /gpio i 0"],
+			["simulate sensor 1", "/sensor_1", "sendosc 127.0.1 5005 /gpio i 1"],
+			["reload looper", "/reload_looper", "sudo systemctl restart rpi_omx_loop"],
+			["reload remote", "/reload_remote", "sudo systemctl restart http_remote"],
 			["reboot", "/reboot", "sudo reboot"],
 			["shutdown", "/shutdown", "sudo shutdown now -h"],
 		]
@@ -24,16 +28,16 @@ class Http_Remote_Server(BaseHTTPRequestHandler):
 			self.wfile.write(bytes("</body></html>", "utf-8"))
 
 		def serve_function(COMMAND, DESCRIPTION):
+			RESULT = os.popen(COMMAND).read()
 			self.wfile.write(bytes('<html>', "utf-8"))
 			self.wfile.write(bytes('  <head>', "utf-8"))
 			self.wfile.write(bytes('    <title>'+DESCRIPTION+'</title>', "utf-8"))
 			self.wfile.write(bytes('  </head>', "utf-8"))
 			self.wfile.write(bytes('  <body>', "utf-8"))
-			self.wfile.write(bytes(DESCRIPTION+' successfull.', "utf-8"))
+			self.wfile.write(bytes(DESCRIPTION+' successfull.<br>', "utf-8"))
+			self.wfile.write(bytes(str(RESULT)+'<br>', "utf-8"))
 			self.wfile.write(bytes('  </body>', "utf-8"))
 			self.wfile.write(bytes('</html>', "utf-8"))
-			os.system(COMMAND)
-
 
 		self.send_response(200)
 		self.send_header("Content-type", "text/html")
@@ -42,7 +46,7 @@ class Http_Remote_Server(BaseHTTPRequestHandler):
 		serve_home()
 
 		for EDATA in (DATA):
-			if self.path == EDATA[1]:
+			if self.path == EDATA[1] or self.path == EDATA[1]+'/':
 				serve_function(EDATA[2], EDATA[0])
 
 myServer = HTTPServer(('', hostPort), Http_Remote_Server)
