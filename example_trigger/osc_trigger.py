@@ -15,7 +15,7 @@ from pythonosc import osc_server
 last_gpio_value = -1
 script_path= -1
 
-def gpio_handler(unused_addr, args, value):
+def osc_handler(unused_addr, args, value):
 	global last_gpio_value
 	global script_path
 	if value == 1:
@@ -23,13 +23,11 @@ def gpio_handler(unused_addr, args, value):
 			last_gpio_value = 1
 			log.info("1")
 			subprocess.call([sh_path_1])
-#			subprocess.call(['./1.sh'])
 	if value == 0:
 		if last_gpio_value != value:
 			last_gpio_value = 0
 			log.info("0")
 			subprocess.call([sh_path_0])
-#			subprocess.call(['./0.sh'])
 
 
 if __name__ == "__main__":
@@ -49,7 +47,7 @@ if __name__ == "__main__":
 	sh_path_1 = os.path.join(script_path, "1.sh")
 	print(sh_path_0)
 	dispatcher = dispatcher.Dispatcher()
-	dispatcher.map("/gpio", gpio_handler, "gpio")
+	dispatcher.map("/gpio", osc_handler, "gpio")
 
 	server = osc_server.ThreadingOSCUDPServer(
 	(args.ip, args.port), dispatcher)

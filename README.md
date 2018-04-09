@@ -17,6 +17,7 @@ chown root:sambashare /var/lib/samba/usershares
 chmod 1770 /var/lib/samba/usershares
 gpasswd sambashare -a your_username_1
 gpasswd sambashare -a your_username_2
+chgrp -R sambashare /var/lib/samba/usershares/medias
 ```
 
 `/etc/samba/smb.conf`
@@ -24,9 +25,9 @@ gpasswd sambashare -a your_username_2
 [medias]
    comment = medias folder
    path = /var/lib/samba/usershares/medias
-   valid users = artificiel camaraderie
+   valid users = @sambashare, @users
    public = no
    writable = yes
    printable = no
-   create mask = 0765
+#   create mask = 0765
 ```

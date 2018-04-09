@@ -4,9 +4,9 @@ pkgrel=1
 pkgdesc="rpi_omx_osc_trigger"
 arch=('any')
 depends=('omxplayer' 'python-systemd')
-source=("$pkgname.service")
+source=("$pkgname.service" "rpi_omx_trigger_sensor.service")
 install=$pkgname.install
-md5sums=('SKIP')
+md5sums=('SKIP' 'SKIP')
 
 package() 
 {
