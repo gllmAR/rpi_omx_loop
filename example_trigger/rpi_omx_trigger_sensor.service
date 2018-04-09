@@ -2,7 +2,7 @@
 Description=rpi_omx_trigger_sensor
 After=syslog.target
 [Service]
-ExecStart=/usr/local/bin/gpioOsc.py -i 20 -d 127.0.0.1 -p 5005 -r 2 -t 1 -b 10 -o /gpio/1
+ExecStart=/usr/local/bin/gpioOsc.py -i 21 -d 127.0.0.1 -p 5005 -r 2 -t 0 -b 10 -o /gpio
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
