@@ -5,7 +5,7 @@ function process {
         sudo systemctl enable $SERVICENAME.service
         sudo systemctl restart $SERVICENAME.service
         sudo systemctl restart rpi_omx_trigger_sensor.service
-        sudo systemctl restart rpi_omx_trigger_sensor.service
+        sudo systemctl enable rpi_omx_trigger_sensor.service
 }
 
 
